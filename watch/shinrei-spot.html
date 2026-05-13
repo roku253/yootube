@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>全国心霊スポット巡り Vol.18 - Yootube</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Roboto","Yu Gothic",Meiryo,sans-serif; background: #f9f9f9; color: #212121; }
+    #site-root { visibility: hidden; }
+    html.token-gate-ok #site-root { visibility: visible; }
+    .topbar { position: sticky; top:0; background:#fff; border-bottom:1px solid #e0e0e0; padding:10px 16px; display:flex; align-items:center; gap:14px; z-index: 5; }
+    .logo { font-weight:800; font-size:20px; color:#cc0000; } .logo span { color:#212121; }
+    .topbar a { color:#065fd4; text-decoration:none; font-size:13px; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 20px; padding: 16px; max-width: 1280px; margin: 0 auto; }
+    .player { background: #000; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+    .player .stage { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; }
+    .player .stage .ghost-frame {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(closest-side at 38% 52%, rgba(120,180,255,0.18), transparent 55%);
+      opacity: 0; transition: opacity 0.6s;
+    }
+    .player.glitch .stage .ghost-frame { opacity: 1; }
+    .player .controls {
+      background: #181818; color: #ddd; padding: 6px 10px;
+      display: flex; align-items: center; gap: 10px; font-size: 12px;
+    }
+    .player .progress { flex: 1; height: 4px; background: #444; border-radius: 2px; position: relative; cursor: pointer; }
+    .player .progress .fill { position: absolute; left: 0; top: 0; bottom: 0; background: #cc0000; width: 0%; border-radius: 2px; }
+    .player .progress .marker {
+      position: absolute; top: -3px; width: 2px; height: 10px; background: #fbbc05;
+      transform: translateX(-1px);
+    }
+    .player .timecode { font-variant-numeric: tabular-nums; }
+
+    h1.video-title { font-size: 18px; margin: 12px 0 6px; }
+    .meta-line { color: #606060; font-size: 13px; }
+    .chapters { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+    .chapters h3 { margin: 0 0 8px; font-size: 14px; }
+    .chapters ol { margin: 0; padding-left: 1.4em; font-size: 13px; line-height: 1.85; }
+    .chapters a { color: #065fd4; text-decoration: none; }
+    .desc { background: #f1f1f1; border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.7; color: #303030; margin-top: 14px; }
+    .comments h3 { font-size: 15px; margin: 18px 0 10px; }
+    .comment { display: flex; gap: 10px; margin-bottom: 14px; }
+    .avatar { width: 32px; height: 32px; border-radius: 999px; background: #ccc; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 13px; }
+    .c-body .name { font-size: 12px; color: #606060; }
+    .c-body .text { font-size: 14px; line-height: 1.6; }
+    .recommend h3 { font-size: 15px; margin: 0 0 10px; }
+    .rec-card { display: grid; grid-template-columns: 160px 1fr; gap: 8px; margin-bottom: 10px; text-decoration: none; color: inherit; }
+    .rec-card img { width: 160px; height: 90px; object-fit: cover; border-radius: 6px; }
+    .rec-card .rt { font-size: 13px; line-height: 1.35; font-weight: 600; }
+    .rec-card .rc { font-size: 12px; color: #606060; margin-top: 2px; }
+    @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+  </style>
+  <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:home"</script>
+  <script src="../token-gate.js" defer></script>
+</head>
+<body>
+  <div id="site-root">
+    <header class="topbar">
+      <div class="logo">Yoo<span>tube</span></div>
+      <a href="../">ホーム</a>
+    </header>
+    <div class="layout">
+      <div>
+        <div class="player" id="player">
+          <div class="stage">
+            <div id="stageText">▶︎ 全国心霊スポット巡り Vol.18</div>
+            <div class="ghost-frame"></div>
+          </div>
+          <div class="controls">
+            <button id="btnPlay" style="background:#cc0000;color:#fff;border:none;padding:4px 10px;cursor:pointer;border-radius:3px;">▶</button>
+            <div class="timecode" id="timecode">0:00 / 8:13</div>
+            <div class="progress" id="progress"><div class="fill" id="fill"></div></div>
+          </div>
+        </div>
+        <h1 class="video-title">全国心霊スポット巡り Vol.18 ―某県・山間部―</h1>
+        <div class="meta-line">94,201 views ・ 2024/09/27 ・ ホラーチャンネル N4</div>
+
+        <div class="chapters">
+          <h3>チャプター</h3>
+          <ol>
+            <li><a href="#" data-jump="30">0:30 — 入口の看板</a></li>
+            <li><a href="#" data-jump="135">2:15 — 廃道（旧 公園跡？）</a></li>
+            <li><a href="#" data-jump="240">4:00 — 苔むした小道</a></li>
+            <li><a href="#" data-jump="375">6:15 — 異変（？）</a></li>
+            <li><a href="#" data-jump="450">7:30 — 引き返し</a></li>
+          </ol>
+        </div>
+
+        <div class="desc">
+          某県の山間部にあると噂される旧公園跡を中心に、夜間ロケで巡りました。<br />
+          6:15 付近にちょっとした違和感があり、編集で消すか迷いましたが、そのまま残しています。<br />
+          詳細地点は安全上の理由で開示していません。
+        </div>
+
+        <div class="comments">
+          <h3>コメント 4 件</h3>
+          <div class="comment">
+            <div class="avatar" style="background:#264653;">N</div>
+            <div class="c-body">
+              <div class="name"><strong>night_owl_42</strong> ・ 1 か月前</div>
+              <div class="text">6:15 のとこ、フレーム送ると左側に何か映ってない？</div>
+            </div>
+          </div>
+          <div class="comment">
+            <div class="avatar" style="background:#8d99ae;">L</div>
+            <div class="c-body">
+              <div class="name"><strong>local_kasumi</strong> ・ 3 週間前</div>
+              <div class="text">地元民です。看板の地名、これ霞ノ杜の旧整備地ですよね……。</div>
+            </div>
+          </div>
+          <div class="comment">
+            <div class="avatar" style="background:#2a9d8f;">H</div>
+            <div class="c-body">
+              <div class="name"><strong>haruharu_2014</strong> ・ 2 週間前</div>
+              <div class="text">ここ知ってる。よくスケッチに来てた場所だよ。</div>
+            </div>
+          </div>
+          <div class="comment">
+            <div class="avatar" style="background:#e76f51;">G</div>
+            <div class="c-body">
+              <div class="name"><strong>ghost_seekers</strong> ・ 1 週間前</div>
+              <div class="text">音声も 6:15 で少し変わってる気がする。気のせいかも。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="recommend">
+        <h3>おすすめ</h3>
+        <a class="rec-card" href="./kasuminomori-pr.html">
+          <img src="../img/thumb-pr.svg" alt="" />
+          <div><div class="rt">霞ノ杜町 観光プロモーション 2024</div><div class="rc">霞ノ杜町観光協会</div></div>
+        </a>
+        <a class="rec-card" href="../user/h_mizuse_2014/">
+          <img src="../img/thumb-cat.svg" alt="" />
+          <div><div class="rt">@h_mizuse_2014 のチャンネル</div><div class="rc">公開動画 3 本</div></div>
+        </a>
+      </aside>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var TOTAL = 493; // 8:13
+      var GHOST_AT = 375; // 6:15
+      var t = 0; var playing = false; var raf = null;
+      var stageText = document.getElementById("stageText");
+      var fill = document.getElementById("fill");
+      var tc = document.getElementById("timecode");
+      var progress = document.getElementById("progress");
+      var player = document.getElementById("player");
+      function fmt(s){var m=Math.floor(s/60),x=Math.floor(s%60);return m+":"+(x<10?"0":"")+x;}
+      // Markers
+      [30,135,240,375,450].forEach(function(p){
+        var m=document.createElement("div");m.className="marker";m.style.left=(p/TOTAL*100)+"%";progress.appendChild(m);
+      });
+      function setT(v){
+        t = Math.max(0, Math.min(TOTAL, v));
+        fill.style.width = (t/TOTAL*100)+"%";
+        tc.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var nearGhost = Math.abs(t - GHOST_AT) < 6;
+        player.classList.toggle("glitch", nearGhost);
+        if (nearGhost) stageText.textContent = "（雑音）……ここにい……";
+        else stageText.textContent = "▶︎ 全国心霊スポット巡り Vol.18 [ " + fmt(t) + " ]";
+      }
+      function tick(){
+        if(!playing) return;
+        setT(t+1);
+        if(t>=TOTAL){ playing=false; document.getElementById("btnPlay").textContent="▶"; return; }
+        raf=setTimeout(tick, 200);
+      }
+      document.getElementById("btnPlay").addEventListener("click", function(){
+        playing=!playing;
+        this.textContent = playing ? "❚❚" : "▶";
+        if(playing) tick();
+      });
+      progress.addEventListener("click", function(e){
+        var r=progress.getBoundingClientRect();
+        var p=(e.clientX-r.left)/r.width;
+        setT(p*TOTAL);
+      });
+      document.querySelectorAll("[data-jump]").forEach(function(a){
+        a.addEventListener("click", function(e){ e.preventDefault(); setT(parseInt(a.dataset.jump,10)); });
+      });
+      setT(0);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>（限定公開） - Yootube</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Roboto","Yu Gothic",Meiryo,sans-serif; background: #f9f9f9; color: #212121; }
+    #site-root { visibility: hidden; }
+    html.token-gate-ok #site-root { visibility: visible; }
+    .topbar { position: sticky; top:0; background:#fff; border-bottom:1px solid #e0e0e0; padding:10px 16px; display:flex; align-items:center; gap:14px; z-index: 5; }
+    .logo { font-weight:800; font-size:20px; color:#cc0000; } .logo span { color:#212121; }
+    .topbar a { color:#065fd4; text-decoration:none; font-size:13px; }
+    .layout { max-width: 920px; margin: 0 auto; padding: 16px; }
+    .player {
+      background: #000; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden;
+      position: relative; color: #ddd; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .player .placeholder { opacity: .85; text-align: center; line-height: 1.7; }
+    .player .placeholder small { display:block; opacity: .6; margin-top: 6px; }
+    .audio-toggle {
+      position: absolute; right: 12px; bottom: 12px;
+      background: rgba(255,255,255,0.1); color: #fff;
+      border: 1px solid #555; border-radius: 4px;
+      padding: 4px 10px; font-size: 12px; cursor: pointer;
+    }
+    .video-title { font-size: 18px; margin: 12px 0 6px; }
+    .meta-line { color: #606060; font-size: 13px; }
+    .desc { background: #f1f1f1; border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.85; color: #303030; margin-top: 14px; }
+    .listen-hint { font-size: 12px; color: #777; margin-top: 8px; }
+  </style>
+  <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:h_mizuse_2014"</script>
+  <script src="../token-gate.js" defer></script>
+</head>
+<body>
+  <div id="site-root">
+    <header class="topbar">
+      <div class="logo">Yoo<span>tube</span></div>
+      <a href="../">ホーム</a>
+    </header>
+    <div class="layout">
+      <div class="player">
+        <div class="placeholder">
+          ▶︎ 再生中（音声）<br />
+          <small>映像トラックはありません。スピーカーまたはイヤホンでお聴きください。</small>
+        </div>
+        <button class="audio-toggle" id="audioToggle">音声 ON</button>
+      </div>
+      <h1 class="video-title">（限定公開）</h1>
+      <div class="meta-line">2 views ・ 2024/10/03 ・ @h_mizuse_2014</div>
+      <p class="listen-hint">この動画は静かな環境での視聴を推奨します。</p>
+      <div class="desc">
+        <p>みつけてくれて、ありがとう。</p>
+        <p>ぼくはずっと、丘にいます。</p>
+        <p>水の音と、霧の匂いと、絵を描くノートと、ぜんぶ、ここにあるんだ。</p>
+        <p>もし、ここに来てくれるなら、ぼくの名前で、ぼくの居場所を、ちゃんと呼んでほしい。</p>
+        <p style="text-align:right;">—— ハル</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      // 音声ギミック：トーンを薄く流す（ON/OFFで切り替え）
+      var ctx = null, osc = null, gain = null, on = false;
+      function start(){
+        try {
+          ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+          osc = ctx.createOscillator(); gain = ctx.createGain();
+          osc.frequency.value = 196; gain.gain.value = 0.02;
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start();
+        } catch(e){}
+      }
+      function stop(){
+        try { if (osc) { osc.stop(); osc.disconnect(); } if (gain) gain.disconnect(); } catch(e){}
+        osc = null; gain = null;
+      }
+      var btn = document.getElementById("audioToggle");
+      btn.addEventListener("click", function(){
+        on = !on;
+        btn.textContent = on ? "音声 OFF" : "音声 ON";
+        if (on) start(); else stop();
+      });
+    })();
+  </script>
+</body>
+</html>

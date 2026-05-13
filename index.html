@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yootube - ホーム</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: "Roboto", "Yu Gothic", Meiryo, sans-serif;
+      background: #f9f9f9; color: #212121;
+    }
+    #site-root { visibility: hidden; }
+    html.token-gate-ok #site-root { visibility: visible; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 5;
+      background: #fff; border-bottom: 1px solid #e0e0e0;
+      display: flex; align-items: center; padding: 10px 16px; gap: 14px;
+    }
+    .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: #cc0000; }
+    .logo span { color: #212121; }
+    .search { flex: 1; max-width: 560px; display: flex; gap: 6px; }
+    .search input { flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 2px; font-size: 14px; }
+    .search button { padding: 8px 14px; border: 1px solid #ccc; background: #f8f8f8; cursor: pointer; }
+    .topbar a { color: #065fd4; text-decoration: none; font-size: 13px; }
+
+    .container { display: grid; grid-template-columns: 220px 1fr; gap: 0; }
+    aside.sidebar { background: #fff; border-right: 1px solid #e0e0e0; min-height: calc(100vh - 53px); padding: 12px 0; }
+    .sidebar a {
+      display: block; padding: 8px 18px; font-size: 14px; color: #212121; text-decoration: none;
+    }
+    .sidebar a:hover { background: #f0f0f0; }
+    .sidebar h3 {
+      margin: 14px 18px 6px; font-size: 11px; letter-spacing: 0.06em;
+      color: #757575; text-transform: uppercase;
+    }
+    main.content { padding: 16px; }
+    .home-row h2 { font-size: 16px; margin: 6px 0 10px; color: #303030; }
+    .video-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .video-card { cursor: pointer; }
+    .video-card .thumb {
+      position: relative; aspect-ratio: 16/9; background: #1c1c1c;
+      border-radius: 8px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .video-card .thumb img, .video-card .thumb svg { width: 100%; height: 100%; object-fit: cover; }
+    .video-card .duration {
+      position: absolute; right: 6px; bottom: 6px;
+      background: rgba(0,0,0,.78); color: #fff; padding: 1px 6px;
+      font-size: 11px; border-radius: 3px;
+    }
+    .video-card .meta { margin-top: 6px; }
+    .video-card .title { font-size: 14px; font-weight: 600; color: #212121; line-height: 1.35; }
+    .video-card .ch { font-size: 12px; color: #5f6368; margin-top: 2px; }
+    .video-card .stat { font-size: 12px; color: #5f6368; }
+
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; }
+      aside.sidebar { display: none; }
+    }
+
+    .ns-denied-overlay {
+      position: fixed; inset: 0; z-index: 999999;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Roboto", system-ui, sans-serif;
+      padding: 24px;
+    }
+    .ns-denied-card {
+      max-width: 520px; width: 100%;
+      border: 1px solid #e0e0e0; border-radius: 12px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.1);
+      padding: 26px 22px; text-align: center;
+    }
+    .ns-denied-card h1 { margin: 0 0 10px; color: #cc0000; font-size: 18px; }
+    .ns-denied-card p { margin: 6px 0; font-size: 13px; color: #5f6368; line-height: 1.7; }
+    .ns-denied-card .small { font-size: 11px; color: #999; margin-top: 14px; }
+  </style>
+  <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:home"</script>
+  <script>
+    window.__TOKEN_DENIED__ = function (msg) {
+      var el = document.createElement("div");
+      el.className = "ns-denied-overlay";
+      el.innerHTML =
+        '<div class="ns-denied-card">' +
+        '<h1>Yootube ｜ 403 — 限定公開</h1>' +
+        '<p>このページは現在、限定公開モードで配信されています。</p>' +
+        '<p>正規の経路（プレイ画面）からアクセスしてください。</p>' +
+        '<p class="small">' + String(msg || "").replace(/[<>]/g, "") + '</p>' +
+        '</div>';
+      document.documentElement.appendChild(el);
+    };
+  </script>
+  <script src="./token-gate.js" defer></script>
+</head>
+<body>
+  <div id="site-root">
+    <header class="topbar">
+      <div class="logo">Yoo<span>tube</span></div>
+      <form class="search" onsubmit="return false;">
+        <input type="text" placeholder="検索" />
+        <button>検索</button>
+      </form>
+      <a href="./">ホーム</a>
+    </header>
+    <div class="container">
+      <aside class="sidebar">
+        <a href="./">ホーム</a>
+        <a href="./watch/kasuminomori-pr.html">霞ノ杜PR動画</a>
+        <a href="./watch/shinrei-spot.html">心霊スポット巡り</a>
+        <h3>チャンネル</h3>
+        <a href="./user/h_mizuse_2014/">@h_mizuse_2014</a>
+      </aside>
+      <main class="content">
+        <section class="home-row">
+          <h2>あなたへのおすすめ</h2>
+          <div class="video-grid" id="grid"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var videos = [
+        { id: "v01", title: "【公式】霞ノ杜町 観光プロモーション 2024", ch: "霞ノ杜町観光協会", views: "12,840", dur: "2:48", thumb: "./img/thumb-pr.svg", href: "./watch/kasuminomori-pr.html" },
+        { id: "v02", title: "全国心霊スポット巡り Vol.18 ―某県・山間部―", ch: "ホラーチャンネル N4", views: "94,201", dur: "8:13", thumb: "./img/thumb-shinrei.svg", href: "./watch/shinrei-spot.html" },
+        { id: "v03", title: "【検証】コンビニで一番うまいスイーツはどれ", ch: "甘味らじお", views: "302,499", dur: "10:01", thumb: "./img/thumb-sweets.svg", href: "#" },
+        { id: "v04", title: "AIに怖い話を作らせたら淡々と滑ってきた", ch: "雑談部屋", views: "55,012", dur: "12:30", thumb: "./img/thumb-ai.svg", href: "#" },
+        { id: "v05", title: "ニートの一日 #103", ch: "ニートの部屋", views: "988", dur: "7:18", thumb: "./img/thumb-neet.svg", href: "#" },
+        { id: "v06", title: "うちの猫が3:17に必ず起きる件", ch: "ねこびより", views: "121,330", dur: "1:42", thumb: "./img/thumb-cat.svg", href: "#" },
+        { id: "v07", title: "廃線跡ハイク 夏の終わり", ch: "歩く人", views: "23,090", dur: "14:50", thumb: "./img/thumb-rail.svg", href: "#" },
+        { id: "v08", title: "今期アニメ第3話の引きを語る", ch: "アニメの話", views: "8,512", dur: "11:09", thumb: "./img/thumb-anime.svg", href: "#" },
+      ];
+      var grid = document.getElementById("grid");
+      videos.forEach(function (v) {
+        var a = document.createElement("a");
+        a.href = v.href || "#";
+        a.className = "video-card";
+        a.style.textDecoration = "none";
+        a.innerHTML =
+          '<div class="thumb">' +
+            '<img src="' + v.thumb + '" alt="" />' +
+            '<span class="duration">' + v.dur + '</span>' +
+          '</div>' +
+          '<div class="meta">' +
+            '<div class="title">' + v.title + '</div>' +
+            '<div class="ch">' + v.ch + '</div>' +
+            '<div class="stat">' + v.views + ' views</div>' +
+          '</div>';
+        grid.appendChild(a);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>@h_mizuse_2014 のチャンネル - Yootube</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Roboto","Yu Gothic",Meiryo,sans-serif; background: #f9f9f9; color: #212121; }
+    #site-root { visibility: hidden; }
+    html.token-gate-ok #site-root { visibility: visible; }
+    .topbar { position: sticky; top:0; background:#fff; border-bottom:1px solid #e0e0e0; padding:10px 16px; display:flex; align-items:center; gap:14px; z-index: 5; }
+    .logo { font-weight:800; font-size:20px; color:#cc0000; } .logo span { color:#212121; }
+    .topbar a { color:#065fd4; text-decoration:none; font-size:13px; }
+
+    .channel-banner {
+      background: linear-gradient(135deg, #2a3b34 0%, #6b8e6b 100%);
+      height: 140px; position: relative;
+    }
+    .channel-banner .stars {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(2px 2px at 12% 24%, #fff5, transparent), radial-gradient(2px 2px at 70% 50%, #fff4, transparent), radial-gradient(1px 1px at 40% 80%, #fff6, transparent);
+    }
+    .channel-info {
+      max-width: 1100px; margin: -40px auto 0; padding: 0 20px;
+      display: flex; align-items: flex-end; gap: 20px;
+    }
+    .avatar-big {
+      width: 96px; height: 96px; border-radius: 999px;
+      background: #f3a548; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 32px; box-shadow: 0 0 0 4px #fff;
+    }
+    .channel-info h1 { margin: 0; font-size: 22px; }
+    .channel-info .handle { color: #5f6368; font-size: 13px; margin-top: 4px; }
+    .channel-info .sub { font-size: 12px; color: #5f6368; }
+
+    .tabs { max-width: 1100px; margin: 16px auto 0; padding: 0 20px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 18px; }
+    .tab { padding: 10px 4px; font-size: 13px; color: #303030; border-bottom: 2px solid transparent; cursor: pointer; }
+    .tab.active { border-bottom-color: #212121; font-weight: 700; }
+
+    .video-grid { max-width: 1100px; margin: 18px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .video-card .thumb { aspect-ratio: 16/9; background: #1c1c1c; border-radius: 8px; overflow: hidden; position: relative; }
+    .video-card .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .video-card .lock-overlay {
+      position: absolute; inset: 0; background: rgba(20,20,20,0.78);
+      color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      font-size: 12px; letter-spacing: 0.04em;
+    }
+    .video-card .lock-icon { font-size: 24px; }
+    .video-card .duration {
+      position: absolute; right: 6px; bottom: 6px; background: rgba(0,0,0,.78); color:#fff;
+      padding: 1px 6px; font-size: 11px; border-radius: 3px;
+    }
+    .video-card .title { font-size: 14px; font-weight: 600; margin-top: 6px; line-height: 1.35; }
+    .video-card .meta { font-size: 12px; color: #5f6368; margin-top: 2px; }
+
+    .about-block {
+      max-width: 800px; margin: 18px auto; padding: 0 20px; font-size: 13px; line-height: 1.85; color: #303030;
+    }
+    .about-block .last-update { font-size: 12px; color: #888; margin-top: 14px; }
+  </style>
+  <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:h_mizuse_2014"</script>
+  <script src="../../token-gate.js" defer></script>
+</head>
+<body>
+  <div id="site-root">
+    <header class="topbar">
+      <div class="logo">Yoo<span>tube</span></div>
+      <a href="../../">ホーム</a>
+    </header>
+    <div class="channel-banner"><div class="stars"></div></div>
+    <div class="channel-info">
+      <div class="avatar-big">H</div>
+      <div>
+        <h1>@h_mizuse_2014</h1>
+        <div class="handle">@h_mizuse_2014</div>
+        <div class="sub">登録者 12 人 ・ 公開動画 3 本</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">ホーム</div>
+      <div class="tab">動画</div>
+      <div class="tab">概要</div>
+    </div>
+
+    <section class="video-grid">
+      <a class="video-card" href="#" onclick="return false;">
+        <div class="thumb"><img src="../../img/thumb-cat.svg" alt="" /><span class="duration">0:48</span></div>
+        <div class="title">うちの猫を撮ってみた</div>
+        <div class="meta">312 回 ・ 2024/05/12</div>
+      </a>
+      <a class="video-card" href="#" onclick="return false;">
+        <div class="thumb"><img src="../../img/thumb-rail.svg" alt="" /><span class="duration">1:22</span></div>
+        <div class="title">夏休みの工作</div>
+        <div class="meta">98 回 ・ 2024/08/22</div>
+      </a>
+      <a class="video-card" href="#" onclick="return false;">
+        <div class="thumb"><img src="../../img/thumb-pr.svg" alt="" /><span class="duration">2:01</span></div>
+        <div class="title">学校までの道（自転車）</div>
+        <div class="meta">61 回 ・ 2024/09/10</div>
+      </a>
+      <a class="video-card" href="../../watch/here-i-am.html">
+        <div class="thumb">
+          <img src="../../img/thumb-pr.svg" alt="" />
+          <div class="lock-overlay">
+            <div class="lock-icon">🔒</div>
+            <div>限定公開</div>
+            <div style="font-size:11px;opacity:.85;">2024/10/03</div>
+          </div>
+        </div>
+        <div class="title">（限定公開）</div>
+        <div class="meta">— ・ 2024/10/03</div>
+      </a>
+    </section>
+
+    <section class="about-block">
+      <h3>このチャンネルについて</h3>
+      <p>
+        絵を描いたり、写真とったりするのがすきです。<br />
+        ぼくのおきにいりの場所とか、ぼくの一日を、たまにアップしていきます。<br />
+        感想とか、コメントとか、よかったら。
+      </p>
+      <p class="last-update">最終ログイン: 2024/10/03</p>
+    </section>
+  </div>
+</body>
+</html>
