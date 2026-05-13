@@ -1,20 +1,19 @@
 /**
- * 外部サイト用 トークンゲート（NSID + masterToken 方式）。
- * URL に ?token= は載せない。アカウント単位の権利をスプレッドシートで確認する。
+ * 外部サイト用 トークンゲート（NSID + masterToken 方式 / 高速化版）
  *
- * 必要な設定：
- *  - TOKEN_GATE_ORIGIN: 任務ポータルのオリジン（postMessage 通信先＆Next API のホスト）
+ * 性能設計：
+ *  1) sessionStorage に「この resourceKey は最近 valid だった」フラグがあれば、即 unlock してネットワーク呼び出しゼロで終わる。
+ *  2) localStorage に資格情報がある場合は、まず unlock して「楽観的に表示」し、
+ *     バックグラウンドで /api/platform/validate-entitlement を叩く。失敗時のみ後追いでロック+denied。
+ *  3) localStorage が空のときだけ、opener へ postMessage を投げて取得（最大 3 秒）。
+ *
+ * 設定：
+ *  - TOKEN_GATE_ORIGIN: 任務ポータルのオリジン
  *  - <head> で window.__TOKEN_RESOURCE_KEY__ を設定（例: "ext:urban-legend-board"）
  *
- * 任意のフック：
+ * 任意フック：
  *  - window.__TOKEN_DENIED__(message) でサイトの雰囲気に合った全面エラーを表示
  *    （未定義時はデフォルトの黒画面オーバーレイ）
- *
- * 認証の取り方：
- *  1) localStorage の ns_login_id / ns_master_token / ns_case_id を読む
- *  2) 無ければ window.opener へ postMessage(NS_AUTH_REQUEST) で要求し、
- *     ポータルから NS_AUTH_GRANT で受け取り localStorage に保存
- *  3) /api/platform/validate-entitlement に POST して権利確認
  */
 ;(function () {
   var TOKEN_GATE_ORIGIN = "https://nazo-portal.vercel.app"
@@ -23,6 +22,10 @@
   var LS_CASE = "ns_case_id"
   var MSG_REQUEST = "NS_AUTH_REQUEST"
   var MSG_GRANT = "NS_AUTH_GRANT"
+  /** sessionStorage の「ここ最近検証OK」フラグ。タブを閉じれば消える */
+  var SS_OK_PREFIX = "ns_gate_ok_v1_"
+  /** OK フラグの有効期限。ここを過ぎると再度バックグラウンド検証する */
+  var OK_TTL_MS = 5 * 60 * 1000
 
   function readCreds() {
     try {
@@ -49,6 +52,41 @@
       localStorage.removeItem(LS_LOGIN)
       localStorage.removeItem(LS_MASTER)
       localStorage.removeItem(LS_CASE)
+    } catch (e) {}
+  }
+
+  function ssOkKey(resourceKey) {
+    return SS_OK_PREFIX + (resourceKey || "")
+  }
+
+  function readCachedOk(resourceKey) {
+    if (!resourceKey) return false
+    try {
+      var raw = sessionStorage.getItem(ssOkKey(resourceKey))
+      if (!raw) return false
+      var n = Number(raw)
+      if (!n || isNaN(n)) return false
+      if (Date.now() - n > OK_TTL_MS) {
+        sessionStorage.removeItem(ssOkKey(resourceKey))
+        return false
+      }
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
+  function writeCachedOk(resourceKey) {
+    if (!resourceKey) return
+    try {
+      sessionStorage.setItem(ssOkKey(resourceKey), String(Date.now()))
+    } catch (e) {}
+  }
+
+  function clearCachedOk(resourceKey) {
+    if (!resourceKey) return
+    try {
+      sessionStorage.removeItem(ssOkKey(resourceKey))
     } catch (e) {}
   }
 
@@ -89,6 +127,14 @@
     defaultDenied(msg)
   }
 
+  function unlock() {
+    document.documentElement.classList.add("token-gate-ok")
+  }
+
+  function lock() {
+    document.documentElement.classList.remove("token-gate-ok")
+  }
+
   function callValidate(c) {
     var resourceKey = window.__TOKEN_RESOURCE_KEY__ || ""
     return fetch(TOKEN_GATE_ORIGIN + "/api/platform/validate-entitlement", {
@@ -105,6 +151,10 @@
     })
   }
 
+  /**
+   * opener にだけ短時間でリクエストして資格情報を取得する。
+   * 取れなければ resolve(null)。タイムアウトは合計 3 秒（旧版は 20 秒）。
+   */
   function bootstrapFromOpener() {
     return new Promise(function (resolve) {
       if (!window.opener || window.opener.closed) {
@@ -113,10 +163,11 @@
       }
       var finished = false
       var tries = 0
+      var MAX_TRIES = 12 // 150ms × 12 = 1.8s
       var poll = setInterval(function () {
         if (finished) return
         tries++
-        if (tries > 80) {
+        if (tries > MAX_TRIES) {
           clearInterval(poll)
           if (!finished) resolve(null)
           return
@@ -127,7 +178,7 @@
             TOKEN_GATE_ORIGIN
           )
         } catch (e) {}
-      }, 250)
+      }, 150)
 
       function onGrant(ev) {
         if (ev.origin !== TOKEN_GATE_ORIGIN) return
@@ -151,44 +202,47 @@
     })
   }
 
-  function applyValidation(data) {
-    if (data && data.valid === true) {
-      cleanUrlToken()
-      document.documentElement.classList.add("token-gate-ok")
-      return true
-    }
-    return false
-  }
-
-  function denyFromValidation(data) {
-    var msg = (data && data.message) || "アクセス権限がありません。"
-    showDenied(msg)
+  /**
+   * すでに unlock 済みの状態でバックグラウンド検証する。
+   * - valid: sessionStorage に OK フラグを更新するだけ
+   * - invalid: ロックして denied を出す
+   * - network error: 楽観表示を維持（次回ロード時に再検証されるので問題なし）
+   */
+  function backgroundRevalidate(c, resourceKey) {
+    callValidate(c)
+      .then(function (data) {
+        if (data && data.valid === true) {
+          writeCachedOk(resourceKey)
+        } else {
+          clearCachedOk(resourceKey)
+          lock()
+          showDenied((data && data.message) || "アクセス権限がありません。")
+        }
+      })
+      .catch(function () {
+        /* network error: 楽観表示のまま維持 */
+      })
   }
 
   function start() {
     cleanUrlToken()
+    var resourceKey = window.__TOKEN_RESOURCE_KEY__ || ""
     var c = readCreds()
-    if (c.loginId && c.masterToken && c.caseId) {
-      callValidate(c)
-        .then(function (data) {
-          if (!applyValidation(data)) {
-            clearCreds()
-            bootstrapFromOpener().then(function (c2) {
-              if (!c2) {
-                denyFromValidation(data)
-                return
-              }
-              callValidate(c2).then(function (d2) {
-                if (!applyValidation(d2)) denyFromValidation(d2)
-              })
-            })
-          }
-        })
-        .catch(function () {
-          showDenied("検証サーバーに接続できませんでした。")
-        })
+
+    // ★ FAST PATH 1: 同じセッションで最近検証OKだった
+    if (resourceKey && readCachedOk(resourceKey) && c.loginId && c.masterToken && c.caseId) {
+      unlock()
       return
     }
+
+    // ★ FAST PATH 2: localStorage に資格情報があれば楽観的に即表示
+    if (c.loginId && c.masterToken && c.caseId) {
+      unlock()
+      backgroundRevalidate(c, resourceKey)
+      return
+    }
+
+    // SLOW PATH: opener から受け取って検証
     bootstrapFromOpener().then(function (c2) {
       if (!c2) {
         showDenied(
@@ -198,7 +252,12 @@
       }
       callValidate(c2)
         .then(function (data) {
-          if (!applyValidation(data)) denyFromValidation(data)
+          if (data && data.valid === true) {
+            writeCachedOk(resourceKey)
+            unlock()
+          } else {
+            showDenied((data && data.message) || "アクセス権限がありません。")
+          }
         })
         .catch(function () {
           showDenied("検証サーバーに接続できませんでした。")
@@ -206,6 +265,7 @@
     })
   }
 
+  // defer 指定済みなので readyState は interactive/complete のはず。即座に走らせる。
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start)
   } else {
