@@ -582,6 +582,8 @@
     .ns-denied-card h1 { margin: 0 0 10px; color: var(--accent); font-size: 18px; font-weight: 500; }
     .ns-denied-card p { margin: 6px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
     .ns-denied-card .small { font-size: 12px; color: var(--text-secondary); margin-top: 14px; opacity: 0.85; }
+    .ns-denied-card .ns-portal { margin-top: 14px; font-size: 13px; line-height: 1.5; word-break: break-all; }
+    .ns-denied-card .ns-portal a { color: var(--accent); text-decoration: underline; }
   </style>
   <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:kasuminomori-pr"</script>
   <script>
@@ -592,6 +594,7 @@
         '<div class="ns-denied-card">' +
         '<h1>このページは表示できません</h1>' +
         '<p>現在、このコンテンツはご覧いただけません。</p>' +
+        '<p class="ns-portal"><a href="https://nazo-portal.vercel.app/portal" target="_blank" rel="noopener noreferrer">https://nazo-portal.vercel.app/portal</a></p>' +
         '</div>';
       document.documentElement.appendChild(el);
     };
