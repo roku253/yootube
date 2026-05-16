@@ -3,82 +3,562 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Yootube - ホーム</title>
+  <title>Yootube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: "Roboto", "Yu Gothic", Meiryo, sans-serif;
-      background: #f9f9f9; color: #212121;
+    :root {
+      --bg: #0f0f0f;
+      --bg-elevated: #212121;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f1f1f1;
+      --text-secondary: #aaa;
+      --chip-active-bg: #f1f1f1;
+      --chip-active-text: #0f0f0f;
+      --chip-bg: rgba(255, 255, 255, 0.1);
+      --hover: rgba(255, 255, 255, 0.08);
+      --accent: #ff0000;
+      --masthead-h: 56px;
+      --sidebar-w: 240px;
     }
-    #site-root { visibility: hidden; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Roboto", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    #site-root { visibility: hidden; min-height: 100%; }
     html.token-gate-ok #site-root { visibility: visible; }
 
-    .topbar {
-      position: sticky; top: 0; z-index: 5;
-      background: #fff; border-bottom: 1px solid #e0e0e0;
-      display: flex; align-items: center; padding: 10px 16px; gap: 14px;
+    /* —— Masthead —— */
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--masthead-h);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
     }
-    .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: #cc0000; }
-    .logo span { color: #212121; }
-    .search { flex: 1; max-width: 560px; display: flex; gap: 6px; }
-    .search input { flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 2px; font-size: 14px; }
-    .search button { padding: 8px 14px; border: 1px solid #ccc; background: #f8f8f8; cursor: pointer; }
-    .topbar a { color: #065fd4; text-decoration: none; font-size: 13px; }
+    .masthead-start {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+    }
+    .icon-btn:hover { background: var(--hover); }
+    .icon-btn svg { width: 24px; height: 24px; display: block; }
 
-    .container { display: grid; grid-template-columns: 220px 1fr; gap: 0; }
-    aside.sidebar { background: #fff; border-right: 1px solid #e0e0e0; min-height: calc(100vh - 53px); padding: 12px 0; }
-    .sidebar a {
-      display: block; padding: 8px 18px; font-size: 14px; color: #212121; text-decoration: none;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+      color: var(--text);
     }
-    .sidebar a:hover { background: #f0f0f0; }
-    .sidebar h3 {
-      margin: 14px 18px 6px; font-size: 11px; letter-spacing: 0.06em;
-      color: #757575; text-transform: uppercase;
+    .brand-mark {
+      width: 90px;
+      height: 20px;
+      display: block;
     }
-    main.content { padding: 16px; }
-    .home-row h2 { font-size: 16px; margin: 6px 0 10px; color: #303030; }
+
+    .masthead-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 720px;
+      margin: 0 auto;
+      gap: 8px;
+      min-width: 0;
+    }
+    .search-wrap {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      max-width: 560px;
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      overflow: hidden;
+      background: #121212;
+    }
+    .search-wrap:focus-within {
+      border-color: #1c62b9;
+      box-shadow: inset 0 0 0 1px #1c62b9;
+    }
+    .search-wrap input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 16px;
+      padding: 0 16px;
+      min-width: 0;
+      outline: none;
+    }
+    .search-wrap input::placeholder { color: #888; }
+    .search-submit {
+      width: 64px;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.08);
+      border-left: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+    }
+    .search-submit:hover { background: var(--hover); }
+    .search-submit svg { width: 24px; height: 24px; }
+
+    .masthead-end {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 12px;
+      height: 36px;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .pill-btn:hover { background: var(--hover); }
+    .pill-btn svg { width: 24px; height: 24px; }
+
+    .notif-wrap {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .notif-wrap:hover { background: var(--hover); }
+    .notif-badge {
+      position: absolute;
+      top: 6px;
+      right: 4px;
+      min-width: 16px;
+      height: 14px;
+      padding: 0 4px;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 14px;
+      text-align: center;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+    }
+
+    .avatar-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #065fd4, #3ea6ff);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: 4px;
+    }
+
+    /* —— Body grid —— */
+    .app-body {
+      display: flex;
+      align-items: stretch;
+      min-height: calc(100vh - var(--masthead-h));
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      padding: 12px 12px 24px;
+      overflow-y: auto;
+      position: sticky;
+      top: var(--masthead-h);
+      align-self: flex-start;
+      max-height: calc(100vh - var(--masthead-h));
+    }
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .sb-item:hover { background: var(--hover); }
+    .sb-item.is-active {
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 500;
+    }
+    .sb-item svg { width: 24px; height: 24px; flex-shrink: 0; opacity: 0.95; }
+
+    .sb-rule {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+
+    .sb-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px 8px 24px;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .sb-heading svg { width: 16px; height: 16px; opacity: 0.7; }
+
+    .sb-sub {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 40px;
+      padding: 0 12px 0 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .sb-sub:hover { background: var(--hover); }
+    .sb-av {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--chip-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ddd;
+    }
+    .sb-sub .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .sb-sub .new-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3ea6ff;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .sb-more {
+      padding: 8px 24px;
+      font-size: 14px;
+      color: var(--text);
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 4px;
+    }
+    .sb-more:hover { background: var(--hover); }
+    .sb-more svg:first-child { width: 24px; height: 24px; opacity: 0.85; }
+
+    /* Main column */
+    .main-col {
+      flex: 1;
+      min-width: 0;
+      padding-right: 24px;
+      padding-bottom: 32px;
+    }
+
+    /* Chip strip */
+    .chips {
+      position: sticky;
+      top: var(--masthead-h);
+      z-index: 90;
+      display: flex;
+      gap: 12px;
+      padding: 12px 0 12px 8px;
+      background: var(--bg);
+      border-bottom: 1px solid transparent;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip {
+      flex-shrink: 0;
+      padding: 0 12px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--chip-bg);
+      color: var(--text);
+      border: none;
+      cursor: pointer;
+    }
+    .chip:hover { background: rgba(255, 255, 255, 0.18); }
+    .chip.is-on {
+      background: var(--chip-active-bg);
+      color: var(--chip-active-text);
+    }
+
+    /* Feed */
+    .feed {
+      padding-top: 8px;
+      padding-left: 8px;
+    }
     .video-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      column-gap: 16px;
+      row-gap: 40px;
     }
-    .video-card { cursor: pointer; }
-    .video-card .thumb {
-      position: relative; aspect-ratio: 16/9; background: #1c1c1c;
-      border-radius: 8px; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
+
+    .featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: stretch;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
     }
-    .video-card .thumb img, .video-card .thumb svg { width: 100%; height: 100%; object-fit: cover; }
-    .video-card .duration {
-      position: absolute; right: 6px; bottom: 6px;
-      background: rgba(0,0,0,.78); color: #fff; padding: 1px 6px;
-      font-size: 11px; border-radius: 3px;
+    @media (max-width: 900px) {
+      .featured { grid-template-columns: 1fr; }
     }
-    .video-card .meta { margin-top: 6px; }
-    .video-card .title { font-size: 14px; font-weight: 600; color: #212121; line-height: 1.35; }
-    .video-card .ch { font-size: 12px; color: #5f6368; margin-top: 2px; }
-    .video-card .stat { font-size: 12px; color: #5f6368; }
+    .featured-thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #181818;
+    }
+    .featured-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .featured-body { display: flex; flex-direction: column; justify-content: center; gap: 12px; min-width: 0; }
+    .featured-kicker { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
+    .featured-title { font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+    .featured-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+    .btn-solid {
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 18px;
+      background: var(--text);
+      color: var(--bg);
+      font-weight: 500;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-solid:hover { opacity: 0.92; }
+    .btn-ghost {
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      font-weight: 500;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.16); }
+
+    .video-card {
+      display: block;
+      cursor: pointer;
+      border-radius: 12px;
+      margin: -4px;
+      padding: 4px;
+    }
+    .video-card:hover .video-title { color: var(--text); }
+    .video-card:focus-visible {
+      outline: 2px solid #3ea6ff;
+      outline-offset: 2px;
+    }
+
+    .thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #181818;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .duration {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      align-items: flex-start;
+    }
+    .ch-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(145deg, #444, #222);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #eee;
+    }
+    .meta-text { flex: 1; min-width: 0; padding-right: 4px; }
+    .video-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--text);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 0;
+    }
+    .ch-line {
+      margin-top: 4px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .ch-line .verify {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+    .stat-line {
+      margin-top: 2px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .meta-menu {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      margin: -8px -8px 0 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+    .video-card:hover .meta-menu,
+    .video-card:focus-within .meta-menu {
+      opacity: 1;
+    }
+    .meta-menu svg { width: 24px; height: 24px; }
 
     @media (max-width: 900px) {
-      .container { grid-template-columns: 1fr; }
-      aside.sidebar { display: none; }
+      .featured { grid-column: 1 / -1; }
+      :root { --sidebar-w: 72px; }
+      .sidebar .sb-label,
+      .sidebar .sb-heading span,
+      .sidebar .sb-more span:last-child,
+      .sidebar .sb-sub span:not(.sb-av) { display: none; }
+      .sidebar .sb-heading { justify-content: center; padding: 8px 0; }
+      .sidebar .sb-item,
+      .sidebar .sb-sub { justify-content: center; padding: 0 8px; gap: 0; }
+      .sidebar .sb-more { justify-content: center; padding: 8px; gap: 0; }
+      .sidebar .sb-rule { margin: 8px 4px; }
+      .masthead-center { display: none; }
+      .meta-menu { opacity: 1; }
+    }
+    @media (max-width: 656px) {
+      :root { --sidebar-w: 0px; }
+      .sidebar { display: none; }
+      .main-col { padding-right: 16px; padding-left: 0; }
     }
 
+    /* Denied overlay — dark */
     .ns-denied-overlay {
-      position: fixed; inset: 0; z-index: 999999;
-      background: #fff;
-      display: flex; align-items: center; justify-content: center;
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: "Roboto", system-ui, sans-serif;
       padding: 24px;
     }
     .ns-denied-card {
-      max-width: 520px; width: 100%;
-      border: 1px solid #e0e0e0; border-radius: 12px;
-      box-shadow: 0 1px 6px rgba(0,0,0,.1);
-      padding: 26px 22px; text-align: center;
+      max-width: 520px;
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-elevated);
+      padding: 26px 22px;
+      text-align: center;
     }
-    .ns-denied-card h1 { margin: 0 0 10px; color: #cc0000; font-size: 18px; }
-    .ns-denied-card p { margin: 6px 0; font-size: 13px; color: #5f6368; line-height: 1.7; }
-    .ns-denied-card .small { font-size: 11px; color: #999; margin-top: 14px; }
+    .ns-denied-card h1 { margin: 0 0 10px; color: var(--accent); font-size: 18px; font-weight: 500; }
+    .ns-denied-card p { margin: 6px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+    .ns-denied-card .small { font-size: 12px; color: #717171; margin-top: 14px; }
   </style>
   <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:kasuminomori-pr"</script>
   <script>
@@ -99,59 +579,316 @@
 </head>
 <body>
   <div id="site-root">
-    <header class="topbar">
-      <div class="logo">Yoo<span>tube</span></div>
-      <form class="search" onsubmit="return false;">
-        <input type="text" placeholder="検索" />
-        <button>検索</button>
-      </form>
-      <a href="./">ホーム</a>
+    <header class="masthead" role="banner">
+      <div class="masthead-start">
+        <button type="button" class="icon-btn" aria-label="ガイドを開く">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 6H3V5h18v1zm0 5H3v1h18v-1zm0 6H3v1h18v-1z"/></svg>
+        </button>
+        <a class="brand" href="./" aria-label="Yootube ホーム">
+          <svg class="brand-mark" viewBox="0 0 90 20" aria-hidden="true">
+            <path fill="#FF0033" d="M28 4.2c0-1.6 1.3-3 3-3h8.4c1.7 0 3 1.4 3 3v11.6c0 1.6-1.3 3-3 3H31c-1.7 0-3-1.4-3-3V4.2zm5.3 2.4v7l5.6-3.5-5.6-3.5z"/>
+            <text x="46" y="15" fill="#f1f1f1" font-size="15" font-family="Roboto, sans-serif" font-weight="700">Yootube</text>
+          </svg>
+        </a>
+      </div>
+      <div class="masthead-center">
+        <form class="search-wrap" role="search" aria-label="Yootube で検索" onsubmit="return false;">
+          <input type="search" name="q" placeholder="検索" autocomplete="off" />
+          <button type="submit" class="search-submit" aria-label="検索を実行">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          </button>
+        </form>
+        <button type="button" class="icon-btn mic" aria-label="音声で検索">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
+        </button>
+      </div>
+      <div class="masthead-end">
+        <button type="button" class="pill-btn" aria-label="作成">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 13v5h-4v-5H5v-4h5V4h4v5h5v4h-5zm-1-11h-2v6H5v2h6v6h2v-6h6v-2h-6V2z"/></svg>
+          <span>作成</span>
+        </button>
+        <button type="button" class="notif-wrap" aria-label="通知">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          <span class="notif-badge">9+</span>
+        </button>
+        <button type="button" class="avatar-btn" aria-label="アカウント">ロ</button>
+      </div>
     </header>
-    <div class="container">
-      <aside class="sidebar">
-        <a href="./">ホーム</a>
-        <a href="./watch/kasuminomori-pr.html">霞ノ杜PR動画</a>
-        <a href="./watch/shinrei-spot.html">心霊スポット巡り</a>
-        <h3>チャンネル</h3>
-        <a href="./user/h_mizuse_2014/">@h_mizuse_2014</a>
+
+    <div class="app-body">
+      <aside class="sidebar" aria-label="ガイド">
+        <a class="sb-item is-active" href="./">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span class="sb-label">ホーム</span>
+        </a>
+        <a class="sb-item" href="#shorts">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 8v8l6-4-6-4zm9-5H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
+          <span class="sb-label">ショート</span>
+        </a>
+        <div class="sb-rule"></div>
+        <div class="sb-heading" role="presentation">
+          <span>登録チャンネル</span>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+        </div>
+        <a class="sb-sub" href="./user/h_mizuse_2014/"><span class="sb-av" style="background:#6d4c41">水</span><span>@h_mizuse_2014</span><span class="new-dot" aria-hidden="true"></span></a>
+        <a class="sb-sub" href="./watch/kasuminomori-pr.html"><span class="sb-av" style="background:#2e7d32">霞</span><span>霞ノ杜町観光協会</span></a>
+        <a class="sb-sub" href="./watch/shinrei-spot.html"><span class="sb-av" style="background:#c62828">N</span><span>ホラーチャンネル N4</span><span class="live-dot" title="ライブ配信中"></span></a>
+        <button type="button" class="sb-more">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+          <span>もっと見る</span>
+        </button>
+        <div class="sb-rule"></div>
+        <div class="sb-heading" role="presentation">
+          <span>マイページ</span>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+        </div>
+        <a class="sb-item" href="./user/h_mizuse_2014/">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <span class="sb-label">チャンネル</span>
+        </a>
+        <a class="sb-item" href="#history">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+          <span class="sb-label">履歴</span>
+        </a>
+        <a class="sb-item" href="#playlists">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/></svg>
+          <span class="sb-label">再生リスト</span>
+        </a>
+        <a class="sb-item" href="#later">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+          <span class="sb-label">後で見る</span>
+        </a>
+        <a class="sb-item" href="#liked">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.82 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+          <span class="sb-label">高く評価した動画</span>
+        </a>
+        <a class="sb-item" href="#your-videos">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+          <span class="sb-label">作成した動画</span>
+        </a>
+        <a class="sb-item" href="#offline">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v3l5 4V12zm-1-7c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v15c0 .55.45 1 1 1h14c.55 0 1-.45 1-1V11l-6-6z"/></svg>
+          <span class="sb-label">オフライン</span>
+        </a>
+        <div class="sb-rule"></div>
+        <div class="sb-heading" role="presentation"><span>探索</span></div>
       </aside>
-      <main class="content">
-        <section class="home-row">
-          <h2>あなたへのおすすめ</h2>
+
+      <div class="main-col">
+        <div class="chips" role="toolbar" aria-label="おすすめのカテゴリ">
+          <button type="button" class="chip is-on">すべて</button>
+          <button type="button" class="chip">ゲーム</button>
+          <button type="button" class="chip">ライブ</button>
+          <button type="button" class="chip">ミックス</button>
+          <button type="button" class="chip">料理番組</button>
+          <button type="button" class="chip">最近アップロードされた動画</button>
+          <button type="button" class="chip">視聴済み</button>
+          <button type="button" class="chip">新着動画</button>
+        </div>
+        <div class="feed">
           <div class="video-grid" id="grid"></div>
-        </section>
-      </main>
+        </div>
+      </div>
     </div>
   </div>
+
   <script>
     (function () {
+      var verifySvg =
+        '<svg class="verify" viewBox="0 0 24 24" aria-hidden="true" title="認証済み">' +
+        '<path fill="#aaa" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' +
+        "</svg>";
+
+      function initials(name) {
+        var s = String(name || "").trim();
+        return s ? s.charAt(0) : "?";
+      }
+
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      var featured = {
+        kicker: "スポンサー — Cursor",
+        title: "Build With Confidence",
+        thumb: "./img/thumb-pr.svg",
+        hrefWatch: "./watch/kasuminomori-pr.html",
+        hrefDetails: "https://cursor.com",
+      };
+
       var videos = [
-        { id: "v01", title: "【公式】霞ノ杜町 観光プロモーション 2024", ch: "霞ノ杜町観光協会", views: "12,840", dur: "2:48", thumb: "./img/thumb-pr.svg", href: "./watch/kasuminomori-pr.html" },
-        { id: "v02", title: "全国心霊スポット巡り Vol.18 ―某県・山間部―", ch: "ホラーチャンネル N4", views: "94,201", dur: "8:13", thumb: "./img/thumb-shinrei.svg", href: "./watch/shinrei-spot.html" },
-        { id: "v03", title: "【検証】コンビニで一番うまいスイーツはどれ", ch: "甘味らじお", views: "302,499", dur: "10:01", thumb: "./img/thumb-sweets.svg", href: "#" },
-        { id: "v04", title: "AIに怖い話を作らせたら淡々と滑ってきた", ch: "雑談部屋", views: "55,012", dur: "12:30", thumb: "./img/thumb-ai.svg", href: "#" },
-        { id: "v05", title: "ニートの一日 #103", ch: "ニートの部屋", views: "988", dur: "7:18", thumb: "./img/thumb-neet.svg", href: "#" },
-        { id: "v06", title: "うちの猫が3:17に必ず起きる件", ch: "ねこびより", views: "121,330", dur: "1:42", thumb: "./img/thumb-cat.svg", href: "#" },
-        { id: "v07", title: "廃線跡ハイク 夏の終わり", ch: "歩く人", views: "23,090", dur: "14:50", thumb: "./img/thumb-rail.svg", href: "#" },
-        { id: "v08", title: "今期アニメ第3話の引きを語る", ch: "アニメの話", views: "8,512", dur: "11:09", thumb: "./img/thumb-anime.svg", href: "#" },
+        {
+          id: "v01",
+          title: "【公式】霞ノ杜町 観光プロモーション 2024",
+          ch: "霞ノ杜町観光協会",
+          verified: true,
+          views: "1.2万",
+          ago: "1 時間前",
+          dur: "2:48",
+          thumb: "./img/thumb-pr.svg",
+          href: "./watch/kasuminomori-pr.html",
+        },
+        {
+          id: "v02",
+          title: "全国心霊スポット巡り Vol.18 ―某県・山間部―",
+          ch: "ホラーチャンネル N4",
+          verified: true,
+          views: "9.4万",
+          ago: "5 日前",
+          dur: "8:13",
+          thumb: "./img/thumb-shinrei.svg",
+          href: "./watch/shinrei-spot.html",
+        },
+        {
+          id: "v03",
+          title: "【検証】コンビニで一番うまいスイーツはどれ",
+          ch: "甘味らじお",
+          verified: false,
+          views: "30万",
+          ago: "3 日前",
+          dur: "10:01",
+          thumb: "./img/thumb-sweets.svg",
+          href: "#",
+        },
+        {
+          id: "v04",
+          title: "AIに怖い話を作らせたら淡々と滑ってきた",
+          ch: "雑談部屋",
+          verified: false,
+          views: "5.5万",
+          ago: "12 時間前",
+          dur: "12:30",
+          thumb: "./img/thumb-ai.svg",
+          href: "#",
+        },
+        {
+          id: "v05",
+          title: "ニートの一日 #103",
+          ch: "ニートの部屋",
+          verified: false,
+          views: "988",
+          ago: "6 か月前",
+          dur: "7:18",
+          thumb: "./img/thumb-neet.svg",
+          href: "#",
+        },
+        {
+          id: "v06",
+          title: "うちの猫が3:17に必ず起きる件",
+          ch: "ねこびより",
+          verified: true,
+          views: "12万",
+          ago: "2 週間前",
+          dur: "1:42",
+          thumb: "./img/thumb-cat.svg",
+          href: "#",
+        },
+        {
+          id: "v07",
+          title: "廃線跡ハイク 夏の終わり",
+          ch: "歩く人",
+          verified: false,
+          views: "2.3万",
+          ago: "4 日前",
+          dur: "14:50",
+          thumb: "./img/thumb-rail.svg",
+          href: "#",
+        },
+        {
+          id: "v08",
+          title: "今期アニメ第3話の引きを語る",
+          ch: "アニメの話",
+          verified: false,
+          views: "8512",
+          ago: "55 分前",
+          dur: "11:09",
+          thumb: "./img/thumb-anime.svg",
+          href: "#",
+        },
       ];
+
       var grid = document.getElementById("grid");
+
+      var feat = document.createElement("article");
+      feat.className = "featured";
+      feat.innerHTML =
+        '<a class="featured-thumb" href="' +
+        esc(featured.hrefWatch) +
+        '">' +
+        '<img src="' +
+        esc(featured.thumb) +
+        '" alt="" />' +
+        "</a>" +
+        '<div class="featured-body">' +
+        '<div class="featured-kicker">' +
+        esc(featured.kicker) +
+        "</div>" +
+        '<h2 class="featured-title">' +
+        esc(featured.title) +
+        "</h2>" +
+        '<div class="featured-actions">' +
+        '<a class="btn-solid" href="' +
+        esc(featured.hrefWatch) +
+        '">視聴する</a>' +
+        '<a class="btn-ghost" href="' +
+        esc(featured.hrefDetails) +
+        '" target="_blank" rel="noopener noreferrer">詳細</a>' +
+        "</div>" +
+        "</div>";
+      grid.appendChild(feat);
+
       videos.forEach(function (v) {
         var a = document.createElement("a");
         a.href = v.href || "#";
         a.className = "video-card";
-        a.style.textDecoration = "none";
+
+        var verifyHtml = v.verified ? verifySvg : "";
+
         a.innerHTML =
           '<div class="thumb">' +
-            '<img src="' + v.thumb + '" alt="" />' +
-            '<span class="duration">' + v.dur + '</span>' +
-          '</div>' +
-          '<div class="meta">' +
-            '<div class="title">' + v.title + '</div>' +
-            '<div class="ch">' + v.ch + '</div>' +
-            '<div class="stat">' + v.views + ' views</div>' +
-          '</div>';
+          '<img src="' +
+          esc(v.thumb) +
+          '" alt="" />' +
+          '<span class="duration">' +
+          esc(v.dur) +
+          "</span>" +
+          "</div>" +
+          '<div class="meta-row">' +
+          '<span class="ch-avatar" aria-hidden="true">' +
+          esc(initials(v.ch)) +
+          "</span>" +
+          '<div class="meta-text">' +
+          '<h3 class="video-title">' +
+          esc(v.title) +
+          "</h3>" +
+          '<div class="ch-line">' +
+          esc(v.ch) +
+          verifyHtml +
+          "</div>" +
+          '<div class="stat-line">' +
+          esc(v.views) +
+          " 回視聴 • " +
+          esc(v.ago) +
+          "</div>" +
+          "</div>" +
+          '<span class="meta-menu" aria-hidden="true">' +
+          '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>' +
+          "</span>" +
+          "</div>";
+
         grid.appendChild(a);
+      });
+
+      document.querySelectorAll(".chip").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".chip").forEach(function (b) {
+            b.classList.toggle("is-on", b === btn);
+          });
+        });
       });
     })();
   </script>
