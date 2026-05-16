@@ -4,115 +4,242 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>霞ノ杜町 観光PR 2024 - Yootube</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: "Roboto","Yu Gothic",Meiryo,sans-serif; background: #f9f9f9; color: #212121; }
-    #site-root { visibility: hidden; }
-    html.token-gate-ok #site-root { visibility: visible; }
-    .topbar { position: sticky; top:0; background:#fff; border-bottom:1px solid #e0e0e0; padding:10px 16px; display:flex; align-items:center; gap:14px; z-index: 5; }
-    .logo { font-weight:800; font-size:20px; color:#cc0000; } .logo span { color:#212121; }
-    .topbar a { color:#065fd4; text-decoration:none; font-size:13px; }
-    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 20px; padding: 16px; max-width: 1280px; margin: 0 auto; }
-    .player { background: #000; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; color: #ccc; }
-    .player .placeholder { font-size: 14px; opacity: .7; }
-    h1.video-title { font-size: 18px; margin: 12px 0 6px; }
-    .meta-line { color: #606060; font-size: 13px; }
-    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 16px; }
-    .chip { padding: 6px 12px; background: #efefef; border-radius: 999px; font-size: 12px; color: #303030; cursor: default; }
-    .desc { background: #f1f1f1; border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.7; color: #303030; }
-    .comments h3 { font-size: 15px; margin: 18px 0 10px; }
-    .comment { display: flex; gap: 10px; margin-bottom: 14px; }
-    .avatar { width: 32px; height: 32px; border-radius: 999px; background: #ccc; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 13px; }
-    .c-body .name { font-size: 12px; color: #606060; }
-    .c-body .name strong { color: #212121; }
-    .c-body .text { font-size: 14px; line-height: 1.6; color: #212121; }
-    .recommend h3 { font-size: 15px; margin: 0 0 10px; }
-    .rec-card { display: grid; grid-template-columns: 160px 1fr; gap: 8px; margin-bottom: 10px; text-decoration: none; color: inherit; }
-    .rec-card img { width: 160px; height: 90px; object-fit: cover; border-radius: 6px; }
-    .rec-card .rt { font-size: 13px; line-height: 1.35; font-weight: 600; }
-    .rec-card .rc { font-size: 12px; color: #606060; margin-top: 2px; }
-    @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/watch-shell.css" />
   <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:kasuminomori-pr"</script>
+  <script>
+    window.__TOKEN_DENIED__ = function (msg) {
+      var el = document.createElement("div");
+      el.className = "ns-denied-overlay";
+      el.innerHTML =
+        '<div class="ns-denied-card">' +
+        '<h1>Yootube ｜ 403 — 限定公開</h1>' +
+        '<p>このページは現在、限定公開モードで配信されています。</p>' +
+        '<p>正規の経路（プレイ画面）からアクセスしてください。</p>' +
+        '<p class="small">' + String(msg || "").replace(/[<>]/g, "") + "</p>" +
+        "</div>";
+      document.documentElement.appendChild(el);
+    };
+  </script>
   <script src="../token-gate.js" defer></script>
 </head>
 <body>
   <div id="site-root">
-    <header class="topbar">
-      <div class="logo">Yoo<span>tube</span></div>
-      <a href="../">ホーム</a>
+    <header class="masthead" role="banner">
+      <div class="masthead-start">
+        <a class="icon-btn" href="../" aria-label="ホームに戻る">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </a>
+        <a class="brand" href="../" aria-label="Yootube ホーム">
+          <svg class="brand-mark" viewBox="0 0 90 20" aria-hidden="true">
+            <path fill="#FF0033" d="M28 4.2c0-1.6 1.3-3 3-3h8.4c1.7 0 3 1.4 3 3v11.6c0 1.6-1.3 3-3 3H31c-1.7 0-3-1.4-3-3V4.2zm5.3 2.4v7l5.6-3.5-5.6-3.5z"/>
+            <text x="46" y="15" fill="currentColor" font-size="15" font-family="Roboto, sans-serif" font-weight="700">Yootube</text>
+          </svg>
+        </a>
+      </div>
+      <div class="masthead-center">
+        <form class="search-wrap" role="search" aria-label="検索" onsubmit="return false;">
+          <input type="search" placeholder="検索" autocomplete="off" />
+          <button type="submit" class="search-submit" aria-label="検索">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          </button>
+        </form>
+        <button type="button" class="icon-btn mic" aria-label="音声で検索">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
+        </button>
+      </div>
+      <div class="masthead-end">
+        <button type="button" class="pill-btn" aria-label="作成">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 13v5h-4v-5H5v-4h5V4h4v5h5v4h-5zm-1-11h-2v6H5v2h6v6h2v-6h6v-2h-6V2z"/></svg>
+          <span>作成</span>
+        </button>
+        <button type="button" class="notif-wrap" aria-label="通知">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          <span class="notif-badge">9+</span>
+        </button>
+        <button type="button" class="avatar-btn" aria-label="アカウント">ロ</button>
+      </div>
     </header>
-    <div class="layout">
-      <div>
-        <div class="player">
-          <div class="placeholder">▶︎ 霞ノ杜町 観光PR 2024（再生）</div>
-        </div>
-        <h1 class="video-title">【公式】霞ノ杜町 観光プロモーション 2024</h1>
-        <div class="meta-line">12,840 views ・ 2024/09/15 ・ 霞ノ杜町観光協会</div>
-        <div class="chips">
-          <span class="chip">観光</span><span class="chip">地方創生</span><span class="chip">PR</span>
-        </div>
-        <div class="desc">
-          霞ノ杜町（かすみのもり）の魅力を 2 分半でご紹介します。<br />
-          神社、吊り橋、足湯、資料館、霧見展望休憩所など、町自慢の 5 ヶ所をめぐる映像です。<br />
-          ※ 動画内に映る景観は撮影時点のものです。一部の場所はその後、整備状況により公開を停止しています。
-        </div>
 
-        <div class="comments">
-          <h3>コメント 5 件</h3>
-          <div class="comment">
-            <div class="avatar" style="background:#f4a261;">M</div>
-            <div class="c-body">
-              <div class="name"><strong>みのり旅</strong> ・ 2 か月前</div>
-              <div class="text">のんびりした雰囲気がいいですね。秋の霧見展望休憩所、行ってみたいです。</div>
+    <div class="watch-page">
+      <div class="watch-inner">
+        <div class="watch-grid">
+          <div class="watch-primary">
+            <div class="watch-player">
+              <div class="player-placeholder">▶ 霞ノ杜町 観光PR 2024（再生）</div>
             </div>
-          </div>
-          <div class="comment">
-            <div class="avatar" style="background:#2a9d8f;">H</div>
-            <div class="c-body">
-              <div class="name"><strong>haruharu_2014</strong> ・ 1 か月前</div>
-              <div class="text">むかし「水辺の丘」って場所があった気がするんですけど、いまはもうないんですか？　ぼくの思い出の場所です。</div>
+
+            <h1 class="watch-title">【公式】霞ノ杜町 観光プロモーション 2024</h1>
+            <div class="watch-stats-line">1.2万 回視聴 • 2024/09/15</div>
+
+            <div class="owner-engage">
+              <div class="owner-block">
+                <div class="owner-avatar-lg" style="background:#2e7d32">霞</div>
+                <div class="owner-lines">
+                  <div class="owner-name-row">
+                    霞ノ杜町観光協会
+                    <svg class="verify" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                  </div>
+                  <div class="owner-subs">登録者数 8.4万人</div>
+                </div>
+              </div>
+              <button type="button" class="subscribe-btn">チャンネル登録</button>
             </div>
-          </div>
-          <div class="comment">
-            <div class="avatar" style="background:#e76f51;">A</div>
-            <div class="c-body">
-              <div class="name"><strong>霞ノ杜町観光協会</strong> ・ 1 か月前 ・ <span style="color:#065fd4;">公式</span></div>
-              <div class="text">ご質問ありがとうございます。当該の場所は、再開発に伴い数年前に閉鎖されており、現在は一般公開しておりません。</div>
+
+            <div class="engage-row">
+              <div class="engage-like-split">
+                <button type="button" class="seg" aria-label="高く評価する">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.82 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+                  682
+                </button>
+                <span class="divider" aria-hidden="true"></span>
+                <button type="button" class="seg" aria-label="低く評価する">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.69 23h11.17c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V5c0-1.1-.9-2-2-2zm4 12h-7V5h7v10zm-9 0H4V5h7v10z"/></svg>
+                </button>
+              </div>
+              <button type="button" class="engage-pill">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+                共有
+              </button>
+              <button type="button" class="engage-pill">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                質問する
+              </button>
+              <button type="button" class="engage-pill">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM2 16h8v-2H2v2z"/></svg>
+                保存
+              </button>
+              <button type="button" class="engage-pill">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v3l5 4V12zm-1-7c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v15c0 .55.45 1 1 1h14c.55 0 1-.45 1-1V11l-6-6z"/></svg>
+                オフライン
+              </button>
+              <button type="button" class="engage-more" aria-label="その他">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+              </button>
             </div>
-          </div>
-          <div class="comment">
-            <div class="avatar" style="background:#8d99ae;">N</div>
-            <div class="c-body">
-              <div class="name"><strong>name_neko</strong> ・ 3 週間前</div>
-              <div class="text">霧、本当に綺麗ですよね。早朝に行きたい。</div>
+
+            <div class="tag-row">
+              <span class="tag">観光</span>
+              <span class="tag">地方創生</span>
+              <span class="tag">PR</span>
             </div>
-          </div>
-          <div class="comment">
-            <div class="avatar" style="background:#264653;">K</div>
-            <div class="c-body">
-              <div class="name"><strong>kasumi_local</strong> ・ 3 週間前</div>
-              <div class="text">地元民です。閉鎖になった例の場所、子どもの頃よく遊んでました。寂しい気持ちもあります。</div>
+
+            <div class="desc-box">
+              霞ノ杜町（かすみのもり）の魅力を 2 分半でご紹介します。<br />
+              神社、吊り橋、足湯、資料館、霧見展望休憩所など、町自慢の 5 ヶ所をめぐる映像です。<br />
+              ※ 動画内に映る景観は撮影時点のものです。一部の場所はその後、整備状況により公開を停止しています。
             </div>
+
+            <section class="comments-section">
+              <h3>コメント 5 件</h3>
+              <div class="comment">
+                <div class="avatar" style="background:#f4a261">M</div>
+                <div class="c-body">
+                  <div class="name"><strong>みのり旅</strong> ・ 2 か月前</div>
+                  <div class="text">のんびりした雰囲気がいいですね。秋の霧見展望休憩所、行ってみたいです。</div>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="avatar" style="background:#2a9d8f">H</div>
+                <div class="c-body">
+                  <div class="name"><strong>haruharu_2014</strong> ・ 1 か月前</div>
+                  <div class="text">むかし「水辺の丘」って場所があった気がするんですけど、いまはもうないんですか？　ぼくの思い出の場所です。</div>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="avatar" style="background:#e76f51">A</div>
+                <div class="c-body">
+                  <div class="name"><strong>霞ノ杜町観光協会</strong> ・ 1 か月前</div>
+                  <div class="text">ご質問ありがとうございます。当該の場所は、再開発に伴い数年前に閉鎖されており、現在は一般公開しておりません。</div>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="avatar" style="background:#8d99ae">N</div>
+                <div class="c-body">
+                  <div class="name"><strong>name_neko</strong> ・ 3 週間前</div>
+                  <div class="text">霧、本当に綺麗ですよね。早朝に行きたい。</div>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="avatar" style="background:#264653">K</div>
+                <div class="c-body">
+                  <div class="name"><strong>kasumi_local</strong> ・ 3 週間前</div>
+                  <div class="text">地元民です。閉鎖になった例の場所、子どもの頃よく遊んでました。寂しい気持ちもあります。</div>
+                </div>
+              </div>
+            </section>
           </div>
+
+          <aside class="watch-secondary">
+            <div class="companion-card">
+              <div class="cc-brand">
+                <div class="cc-logo" aria-hidden="true">✈</div>
+                <div>
+                  <div class="cc-title">霞ノ杜ハイキング・フェア 2026</div>
+                </div>
+              </div>
+              <p class="cc-desc">町公式ガイドツアー参加者募集中。限定ルートのご案内あり。</p>
+              <a class="cc-cta" href="#">今すぐ予約</a>
+            </div>
+
+            <div class="secondary-chips" role="toolbar">
+              <button type="button" class="is-on">すべて</button>
+              <button type="button">霞ノ杜町観光協会から</button>
+              <button type="button">関連動画</button>
+            </div>
+
+            <div class="rec-list">
+              <a class="rec-item" href="./shinrei-spot.html">
+                <div class="rec-thumb">
+                  <img src="../img/thumb-shinrei.svg" alt="" />
+                  <span class="rec-dur">8:13</span>
+                </div>
+                <div class="rec-body">
+                  <div class="rec-title">全国心霊スポット巡り Vol.18 ―某県・山間部―</div>
+                  <div class="rec-meta">
+                    ホラーチャンネル N4
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;opacity:.65"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    <br />9.4万 回視聴 • 5 日前
+                  </div>
+                </div>
+              </a>
+              <a class="rec-item" href="../user/h_mizuse_2014/">
+                <div class="rec-thumb">
+                  <img src="../img/thumb-cat.svg" alt="" />
+                  <span class="rec-dur">1:42</span>
+                </div>
+                <div class="rec-body">
+                  <div class="rec-title">@h_mizuse_2014 — 公開リスト</div>
+                  <div class="rec-meta">チャンネル • 動画 3 本</div>
+                  <div class="rec-badges"><span class="rec-badge">Yootubeより</span></div>
+                </div>
+              </a>
+              <a class="rec-item" href="../">
+                <div class="rec-thumb">
+                  <img src="../img/thumb-rail.svg" alt="" />
+                  <span class="rec-dur">14:50</span>
+                </div>
+                <div class="rec-body">
+                  <div class="rec-title">廃線跡ハイク 夏の終わり</div>
+                  <div class="rec-meta">歩く人 • 2.3万 回視聴 • 4 日前</div>
+                </div>
+              </a>
+            </div>
+          </aside>
         </div>
       </div>
-      <aside class="recommend">
-        <h3>おすすめ</h3>
-        <a class="rec-card" href="./shinrei-spot.html">
-          <img src="../img/thumb-shinrei.svg" alt="" />
-          <div><div class="rt">全国心霊スポット巡り Vol.18 ―某県・山間部―</div><div class="rc">ホラーチャンネル N4 ・ 94,201 回</div></div>
-        </a>
-        <a class="rec-card" href="../user/h_mizuse_2014/">
-          <img src="../img/thumb-cat.svg" alt="" />
-          <div><div class="rt">@h_mizuse_2014 のチャンネル</div><div class="rc">公開動画 3 本</div></div>
-        </a>
-        <a class="rec-card" href="../">
-          <img src="../img/thumb-pr.svg" alt="" />
-          <div><div class="rt">霞ノ杜町 4K 散策映像</div><div class="rc">観光ガイドCh ・ 8,402 回</div></div>
-        </a>
-      </aside>
     </div>
   </div>
+  <script>
+    document.querySelectorAll(".secondary-chips button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        document.querySelectorAll(".secondary-chips button").forEach(function (b) {
+          b.classList.toggle("is-on", b === btn);
+        });
+      });
+    });
+  </script>
 </body>
 </html>

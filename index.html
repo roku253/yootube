@@ -9,18 +9,46 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0f0f0f;
-      --bg-elevated: #212121;
-      --border: rgba(255, 255, 255, 0.1);
-      --text: #f1f1f1;
-      --text-secondary: #aaa;
-      --chip-active-bg: #f1f1f1;
-      --chip-active-text: #0f0f0f;
-      --chip-bg: rgba(255, 255, 255, 0.1);
-      --hover: rgba(255, 255, 255, 0.08);
+      color-scheme: light dark;
       --accent: #ff0000;
       --masthead-h: 56px;
       --sidebar-w: 240px;
+      --bg: #ffffff;
+      --bg-elevated: #f9f9f9;
+      --border: rgba(0, 0, 0, 0.1);
+      --text: #0f0f0f;
+      --text-secondary: #606060;
+      --chip-active-bg: #0f0f0f;
+      --chip-active-text: #ffffff;
+      --chip-bg: rgba(0, 0, 0, 0.05);
+      --chip-hover: rgba(0, 0, 0, 0.1);
+      --hover: rgba(0, 0, 0, 0.05);
+      --search-inner-bg: #ffffff;
+      --search-btn-bg: #f8f8f8;
+      --sb-active-bg: rgba(0, 0, 0, 0.08);
+      --pill-ghost-bg: rgba(0, 0, 0, 0.06);
+      --pill-ghost-hover: rgba(0, 0, 0, 0.1);
+      --thumb-bg: #e8e8e8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --bg-elevated: #212121;
+        --border: rgba(255, 255, 255, 0.1);
+        --text: #f1f1f1;
+        --text-secondary: #aaa;
+        --chip-active-bg: #f1f1f1;
+        --chip-active-text: #0f0f0f;
+        --chip-bg: rgba(255, 255, 255, 0.1);
+        --chip-hover: rgba(255, 255, 255, 0.18);
+        --hover: rgba(255, 255, 255, 0.08);
+        --search-inner-bg: #121212;
+        --search-btn-bg: rgba(255, 255, 255, 0.08);
+        --sb-active-bg: rgba(255, 255, 255, 0.15);
+        --pill-ghost-bg: rgba(255, 255, 255, 0.1);
+        --pill-ghost-hover: rgba(255, 255, 255, 0.16);
+        --thumb-bg: #181818;
+      }
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
@@ -110,7 +138,7 @@
       border: 1px solid var(--border);
       border-radius: 40px;
       overflow: hidden;
-      background: #121212;
+      background: var(--search-inner-bg);
     }
     .search-wrap:focus-within {
       border-color: #1c62b9;
@@ -130,7 +158,7 @@
     .search-submit {
       width: 64px;
       flex-shrink: 0;
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--search-btn-bg);
       border-left: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -228,7 +256,7 @@
     }
     .sb-item:hover { background: var(--hover); }
     .sb-item.is-active {
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--sb-active-bg);
       font-weight: 500;
     }
     .sb-item svg { width: 24px; height: 24px; flex-shrink: 0; opacity: 0.95; }
@@ -272,7 +300,7 @@
       justify-content: center;
       font-size: 11px;
       font-weight: 700;
-      color: #ddd;
+      color: var(--text);
     }
     .sb-sub .live-dot {
       width: 8px;
@@ -339,7 +367,7 @@
       border: none;
       cursor: pointer;
     }
-    .chip:hover { background: rgba(255, 255, 255, 0.18); }
+    .chip:hover { background: var(--chip-hover); }
     .chip.is-on {
       background: var(--chip-active-bg);
       color: var(--chip-active-text);
@@ -375,7 +403,7 @@
       aspect-ratio: 16 / 9;
       border-radius: 12px;
       overflow: hidden;
-      background: #181818;
+      background: var(--thumb-bg);
     }
     .featured-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .featured-body { display: flex; flex-direction: column; justify-content: center; gap: 12px; min-width: 0; }
@@ -399,7 +427,7 @@
       height: 36px;
       padding: 0 16px;
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--pill-ghost-bg);
       color: var(--text);
       font-weight: 500;
       font-size: 14px;
@@ -407,7 +435,7 @@
       align-items: center;
       justify-content: center;
     }
-    .btn-ghost:hover { background: rgba(255, 255, 255, 0.16); }
+    .btn-ghost:hover { background: var(--pill-ghost-hover); }
 
     .video-card {
       display: block;
@@ -425,7 +453,7 @@
     .thumb {
       position: relative;
       aspect-ratio: 16 / 9;
-      background: #181818;
+      background: var(--thumb-bg);
       border-radius: 12px;
       overflow: hidden;
     }
@@ -558,7 +586,7 @@
     }
     .ns-denied-card h1 { margin: 0 0 10px; color: var(--accent); font-size: 18px; font-weight: 500; }
     .ns-denied-card p { margin: 6px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
-    .ns-denied-card .small { font-size: 12px; color: #717171; margin-top: 14px; }
+    .ns-denied-card .small { font-size: 12px; color: var(--text-secondary); margin-top: 14px; opacity: 0.85; }
   </style>
   <script>window.__TOKEN_RESOURCE_KEY__ = "ext:yootube:kasuminomori-pr"</script>
   <script>
@@ -587,7 +615,7 @@
         <a class="brand" href="./" aria-label="Yootube ホーム">
           <svg class="brand-mark" viewBox="0 0 90 20" aria-hidden="true">
             <path fill="#FF0033" d="M28 4.2c0-1.6 1.3-3 3-3h8.4c1.7 0 3 1.4 3 3v11.6c0 1.6-1.3 3-3 3H31c-1.7 0-3-1.4-3-3V4.2zm5.3 2.4v7l5.6-3.5-5.6-3.5z"/>
-            <text x="46" y="15" fill="#f1f1f1" font-size="15" font-family="Roboto, sans-serif" font-weight="700">Yootube</text>
+            <text x="46" y="15" fill="currentColor" font-size="15" font-family="Roboto, sans-serif" font-weight="700">Yootube</text>
           </svg>
         </a>
       </div>
@@ -696,7 +724,7 @@
     (function () {
       var verifySvg =
         '<svg class="verify" viewBox="0 0 24 24" aria-hidden="true" title="認証済み">' +
-        '<path fill="#aaa" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' +
+        '<path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' +
         "</svg>";
 
       function initials(name) {
