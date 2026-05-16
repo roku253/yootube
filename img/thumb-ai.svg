@@ -1,9 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">
   <rect width="320" height="180" fill="#0f1c2a"/>
-  <g fill="#3df">
-    <rect x="80" y="60" width="160" height="80" rx="10"/>
-  </g>
-  <text x="160" y="110" text-anchor="middle" font-size="22" fill="#0a1a26">AI</text>
-  <text x="160" y="160" text-anchor="middle" font-size="12" fill="#cdf">*� <</text>
+  <rect x="80" y="60" width="160" height="80" rx="10" fill="#33ddff"/>
+  <text x="160" y="112" text-anchor="middle" font-family="Roboto,Segoe UI,sans-serif" font-size="22" font-weight="700" fill="#0a1a26">AI</text>
+  <text x="160" y="158" text-anchor="middle" font-family="Roboto,Segoe UI,sans-serif" font-size="12" fill="#9cf">Ghost story</text>
 </svg>

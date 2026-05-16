@@ -12,7 +12,6 @@
       color-scheme: light dark;
       --accent: #ff0000;
       --masthead-h: 56px;
-      --sidebar-w: 240px;
       --bg: #ffffff;
       --bg-elevated: #f9f9f9;
       --border: rgba(0, 0, 0, 0.1);
@@ -226,23 +225,62 @@
       margin-left: 4px;
     }
 
-    /* —— Body grid —— */
+    /* —— Body: ガイドはドロワー（ハンバーガーで開閉） —— */
     .app-body {
-      display: flex;
-      align-items: stretch;
+      display: block;
       min-height: calc(100vh - var(--masthead-h));
+      position: relative;
     }
 
-    /* Sidebar */
+    .guide-scrim {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: var(--masthead-h);
+      bottom: 0;
+      z-index: 150;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      display: block;
+    }
+    html.guide-open .guide-scrim {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Sidebar drawer */
     .sidebar {
-      width: var(--sidebar-w);
+      --sidebar-w-drawer: 240px;
+      position: fixed;
+      left: 0;
+      top: var(--masthead-h);
+      bottom: 0;
+      width: var(--sidebar-w-drawer);
+      max-width: min(var(--sidebar-w-drawer), 92vw);
       flex-shrink: 0;
       padding: 12px 12px 24px;
       overflow-y: auto;
-      position: sticky;
-      top: var(--masthead-h);
-      align-self: flex-start;
-      max-height: calc(100vh - var(--masthead-h));
+      overflow-x: hidden;
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      z-index: 200;
+      transform: translateX(-100%);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: none;
+    }
+    html.guide-open .sidebar {
+      transform: translateX(0);
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+    }
+
+    html.guide-open,
+    html.guide-open body {
+      overflow: hidden;
     }
     .sb-item {
       display: flex;
@@ -333,10 +371,10 @@
 
     /* Main column */
     .main-col {
-      flex: 1;
+      width: 100%;
       min-width: 0;
-      padding-right: 24px;
-      padding-bottom: 32px;
+      padding: 0 24px 32px;
+      box-sizing: border-box;
     }
 
     /* Chip strip */
@@ -544,23 +582,11 @@
 
     @media (max-width: 900px) {
       .featured { grid-column: 1 / -1; }
-      :root { --sidebar-w: 72px; }
-      .sidebar .sb-label,
-      .sidebar .sb-heading span,
-      .sidebar .sb-more span:last-child,
-      .sidebar .sb-sub span:not(.sb-av) { display: none; }
-      .sidebar .sb-heading { justify-content: center; padding: 8px 0; }
-      .sidebar .sb-item,
-      .sidebar .sb-sub { justify-content: center; padding: 0 8px; gap: 0; }
-      .sidebar .sb-more { justify-content: center; padding: 8px; gap: 0; }
-      .sidebar .sb-rule { margin: 8px 4px; }
       .masthead-center { display: none; }
       .meta-menu { opacity: 1; }
     }
     @media (max-width: 656px) {
-      :root { --sidebar-w: 0px; }
-      .sidebar { display: none; }
-      .main-col { padding-right: 16px; padding-left: 0; }
+      .main-col { padding-right: 16px; padding-left: 16px; }
     }
 
     /* Denied overlay — dark */
@@ -609,7 +635,7 @@
   <div id="site-root">
     <header class="masthead" role="banner">
       <div class="masthead-start">
-        <button type="button" class="icon-btn" aria-label="ガイドを開く">
+        <button type="button" class="icon-btn" id="guideToggle" aria-expanded="false" aria-controls="guideDrawer" aria-label="ガイドを開く">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 6H3V5h18v1zm0 5H3v1h18v-1zm0 6H3v1h18v-1z"/></svg>
         </button>
         <a class="brand" href="./" aria-label="Yootube ホーム">
@@ -644,7 +670,8 @@
     </header>
 
     <div class="app-body">
-      <aside class="sidebar" aria-label="ガイド">
+      <button type="button" class="guide-scrim" id="guideScrim" tabindex="-1" aria-label="メニューを閉じる"></button>
+      <aside class="sidebar" id="guideDrawer" aria-label="ガイド">
         <a class="sb-item is-active" href="./">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
           <span class="sb-label">ホーム</span>
@@ -918,6 +945,31 @@
           });
         });
       });
+
+      (function () {
+        var root = document.documentElement;
+        var toggleBtn = document.getElementById("guideToggle");
+        var scrim = document.getElementById("guideScrim");
+        if (!toggleBtn || !scrim) return;
+
+        function setOpen(open) {
+          root.classList.toggle("guide-open", open);
+          toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+          toggleBtn.setAttribute("aria-label", open ? "ガイドを閉じる" : "ガイドを開く");
+          if (open) scrim.removeAttribute("tabindex");
+          else scrim.setAttribute("tabindex", "-1");
+        }
+
+        toggleBtn.addEventListener("click", function () {
+          setOpen(!root.classList.contains("guide-open"));
+        });
+        scrim.addEventListener("click", function () {
+          setOpen(false);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") setOpen(false);
+        });
+      })();
     })();
   </script>
 </body>
