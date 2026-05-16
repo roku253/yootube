@@ -843,3 +843,21 @@ html.token-gate-ok #site-root {
 .yt-interactive-player .timecode {
   font-variant-numeric: tabular-nums;
 }
+
+.watch-fiction-footer {
+  padding: 16px 24px 28px;
+  margin: 0;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  background: var(--bg-muted);
+}
+.watch-fiction-footer p {
+  margin: 0 auto;
+  max-width: 1600px;
+}
+.watch-fiction-footer strong {
+  color: var(--text);
+  font-weight: 600;
+}
