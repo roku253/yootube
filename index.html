@@ -25,8 +25,6 @@
       --search-inner-bg: #ffffff;
       --search-btn-bg: #f8f8f8;
       --sb-active-bg: rgba(0, 0, 0, 0.08);
-      --pill-ghost-bg: rgba(0, 0, 0, 0.06);
-      --pill-ghost-hover: rgba(0, 0, 0, 0.1);
       --thumb-bg: #e8e8e8;
     }
     @media (prefers-color-scheme: dark) {
@@ -44,8 +42,6 @@
         --search-inner-bg: #121212;
         --search-btn-bg: rgba(255, 255, 255, 0.08);
         --sb-active-bg: rgba(255, 255, 255, 0.15);
-        --pill-ghost-bg: rgba(255, 255, 255, 0.1);
-        --pill-ghost-hover: rgba(255, 255, 255, 0.16);
         --thumb-bg: #181818;
       }
     }
@@ -438,58 +434,6 @@
       }
     }
 
-    .featured {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 24px;
-      align-items: stretch;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 8px;
-    }
-    @media (max-width: 900px) {
-      .featured { grid-template-columns: 1fr; }
-    }
-    .featured-thumb {
-      position: relative;
-      aspect-ratio: 16 / 9;
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--thumb-bg);
-    }
-    .featured-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .featured-body { display: flex; flex-direction: column; justify-content: center; gap: 12px; min-width: 0; }
-    .featured-kicker { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
-    .featured-title { font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
-    .featured-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
-    .btn-solid {
-      height: 36px;
-      padding: 0 16px;
-      border-radius: 18px;
-      background: var(--text);
-      color: var(--bg);
-      font-weight: 500;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-solid:hover { opacity: 0.92; }
-    .btn-ghost {
-      height: 36px;
-      padding: 0 16px;
-      border-radius: 18px;
-      background: var(--pill-ghost-bg);
-      color: var(--text);
-      font-weight: 500;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-ghost:hover { background: var(--pill-ghost-hover); }
-
     .video-card {
       display: block;
       cursor: pointer;
@@ -596,7 +540,6 @@
     .meta-menu svg { width: 24px; height: 24px; }
 
     @media (max-width: 900px) {
-      .featured { grid-column: 1 / -1; }
       .masthead-center { display: none; }
       .meta-menu { opacity: 1; }
     }
@@ -782,14 +725,6 @@
           .replace(/"/g, "&quot;");
       }
 
-      var featured = {
-        kicker: "スポンサー — Cursor",
-        title: "Build With Confidence",
-        thumb: "./img/thumb-pr.svg",
-        hrefWatch: "./watch/kasuminomori-pr.html",
-        hrefDetails: "https://cursor.com",
-      };
-
       var videos = [
         {
           id: "v01",
@@ -882,34 +817,6 @@
       ];
 
       var grid = document.getElementById("grid");
-
-      var feat = document.createElement("article");
-      feat.className = "featured";
-      feat.innerHTML =
-        '<a class="featured-thumb" href="' +
-        esc(featured.hrefWatch) +
-        '">' +
-        '<img src="' +
-        esc(featured.thumb) +
-        '" alt="" />' +
-        "</a>" +
-        '<div class="featured-body">' +
-        '<div class="featured-kicker">' +
-        esc(featured.kicker) +
-        "</div>" +
-        '<h2 class="featured-title">' +
-        esc(featured.title) +
-        "</h2>" +
-        '<div class="featured-actions">' +
-        '<a class="btn-solid" href="' +
-        esc(featured.hrefWatch) +
-        '">視聴する</a>' +
-        '<a class="btn-ghost" href="' +
-        esc(featured.hrefDetails) +
-        '" target="_blank" rel="noopener noreferrer">詳細</a>' +
-        "</div>" +
-        "</div>";
-      grid.appendChild(feat);
 
       videos.forEach(function (v) {
         var a = document.createElement("a");
