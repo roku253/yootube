@@ -1,4 +1,4 @@
-/* Yootube 視聴ページ — レイアウト + prefers-color-scheme */
+/* 視聴ページレイアウト */
 :root {
   color-scheme: light dark;
   --masthead-h: 56px;

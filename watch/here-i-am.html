@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>（限定公開） - Yootube</title>
+  <title>動画 — Yootube</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -15,10 +15,8 @@
       el.className = "ns-denied-overlay";
       el.innerHTML =
         '<div class="ns-denied-card">' +
-        '<h1>Yootube ｜ 403 — 限定公開</h1>' +
-        '<p>このページは現在、限定公開モードで配信されています。</p>' +
-        '<p>正規の経路（プレイ画面）からアクセスしてください。</p>' +
-        '<p class="small">' + String(msg || "").replace(/[<>]/g, "") + "</p>" +
+        '<h1>このページは表示できません</h1>' +
+        '<p>現在、このコンテンツはご覧いただけません。</p>' +
         "</div>";
       document.documentElement.appendChild(el);
     };

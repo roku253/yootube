@@ -590,10 +590,8 @@
       el.className = "ns-denied-overlay";
       el.innerHTML =
         '<div class="ns-denied-card">' +
-        '<h1>Yootube ｜ 403 — 限定公開</h1>' +
-        '<p>このページは現在、限定公開モードで配信されています。</p>' +
-        '<p>正規の経路（プレイ画面）からアクセスしてください。</p>' +
-        '<p class="small">' + String(msg || "").replace(/[<>]/g, "") + '</p>' +
+        '<h1>このページは表示できません</h1>' +
+        '<p>現在、このコンテンツはご覧いただけません。</p>' +
         '</div>';
       document.documentElement.appendChild(el);
     };
@@ -656,7 +654,7 @@
         </div>
         <a class="sb-sub" href="./user/h_mizuse_2014/"><span class="sb-av" style="background:#6d4c41">水</span><span>@h_mizuse_2014</span><span class="new-dot" aria-hidden="true"></span></a>
         <a class="sb-sub" href="./watch/kasuminomori-pr.html"><span class="sb-av" style="background:#2e7d32">霞</span><span>霞ノ杜町観光協会</span></a>
-        <a class="sb-sub" href="./watch/shinrei-spot.html"><span class="sb-av" style="background:#c62828">N</span><span>ホラーチャンネル N4</span><span class="live-dot" title="ライブ配信中"></span></a>
+        <a class="sb-sub" href="./watch/shinrei-spot.html"><span class="sb-av" style="background:#c62828">N</span><span>ホラーチャンネル N4</span><span class="live-dot" aria-hidden="true"></span></a>
         <button type="button" class="sb-more">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
           <span>もっと見る</span>
@@ -753,7 +751,7 @@
         },
         {
           id: "v02",
-          title: "全国心霊スポット巡り Vol.18 ―某県・山間部―",
+          title: "全国心霊スポット巡り Vol.18 ―夜間ロケ―",
           ch: "ホラーチャンネル N4",
           verified: true,
           views: "9.4万",
