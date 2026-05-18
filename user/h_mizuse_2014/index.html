@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>@h_mizuse_2014 のチャンネル - Yootube</title>
+  <title>霞ノ杜ローカルニュース（アーカイブ） - Yootube</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; font-family: "Roboto","Yu Gothic",Meiryo,sans-serif; background: #f9f9f9; color: #212121; }
@@ -83,9 +83,9 @@
     <div class="channel-info">
       <div class="avatar-big">H</div>
       <div>
-        <h1>@h_mizuse_2014</h1>
-        <div class="handle">@h_mizuse_2014</div>
-        <div class="sub">登録者 12 人 ・ 公開動画 3 本</div>
+        <h1>霞ノ杜ローカルニュース</h1>
+        <div class="handle">@kasuminomori_tv_archive</div>
+        <div class="sub">登録者 1.2万人 ・ 公開動画 48 本（2016アーカイブ）</div>
       </div>
     </div>
 
@@ -111,28 +111,16 @@
         <div class="title">学校までの道（自転車）</div>
         <div class="meta">61 回 ・ 2024/09/10</div>
       </a>
-      <a class="video-card" data-kn-story-clue="1" href="../../watch/here-i-am.html">
-        <div class="thumb">
-          <img src="../../img/thumb-pr.svg" alt="" />
-          <div class="lock-overlay">
-            <div class="lock-icon">🔒</div>
-            <div>限定公開</div>
-            <div style="font-size:11px;opacity:.85;">2024/10/03</div>
-          </div>
-        </div>
-        <div class="title">（限定公開）</div>
-        <div class="meta">— ・ 2024/10/03</div>
-      </a>
+      <a class="video-card" data-kn-story-clue="1" href="../../watch/kasuminomori-2016-incident.html"><div class="thumb"><img src="../../img/thumb-shinrei.svg" alt="" /><span class="duration">4:12</span></div><div class="title">【2016】霞ノ杜 児童行方不明事件 続報</div><motion.div class="meta">8.4万 回 ・ 2016/08/14</div></a>
     </section>
 
     <section class="about-block" data-kn-story-clue="1">
       <h3>このチャンネルについて</h3>
       <p>
-        絵を描いたり、写真とったりするのがすきです。<br />
-        ぼくのおきにいりの場所とか、ぼくの一日を、たまにアップしていきます。<br />
-        感想とか、コメントとか、よかったら。
+        霞ノ杜テレビのローカル報道アーカイブ（2016年事件関連を中心に再掲）。<br />
+        続報映像では、当時の有力政治家の息子 <strong>大倉翔太</strong> 氏の名前が音声・字幕で確認できる。
       </p>
-      <p class="last-update">最終ログイン: 2024/10/03</p>
+      <p class="last-update">最終更新: 2016/08/15</p>
     </section>
     <footer class="channel-fiction-footer" role="note">
       <p>※本サイトは謎解き作品のための<strong>架空サイト</strong>です。記載・表示されるサービス名・地名・人物名・団体名などはフィクションであり、<strong>実在のものとは一切関係ありません</strong>。</p>
@@ -161,67 +149,7 @@
         if (v !== "purged_delete" && v !== "purged_keep") return;
         knApplyFootprint();
       });
-      var KN_PURGE_CHAIN = [
-        "https://roku253.github.io/urban-legend-board/?kn_purge=1&kn_step=0",
-        "https://roku253.github.io/kasuminomori/?kn_purge=1&kn_step=1",
-        "https://roku253.github.io/kasuminomori-shougakkou/?kn_purge=1&kn_step=2",
-        "https://roku253.github.io/name-to-coord/?kn_purge=1&kn_step=3",
-        "https://roku253.github.io/yootube/user/h_mizuse_2014/?kn_purge=1&kn_step=4",
-        "https://roku253.github.io/gougle-map/?kn_purge=1&kn_step=5",
-      ];
-      function knPurgeAdvance(step) {
-        var next = step + 1;
-        if (next < KN_PURGE_CHAIN.length) {
-          window.location.href = KN_PURGE_CHAIN[next];
-          return;
-        }
-        try {
-          window.close();
-        } catch (e) {}
-      }
-      function knPurgeModal() {
-        var q = new URLSearchParams(location.search);
-        if (q.get("kn_purge") !== "1") return;
-        var step = parseInt(q.get("kn_step") || "0", 10);
-        var ov = document.createElement("div");
-        ov.style.cssText =
-          "position:fixed;inset:0;z-index:999998;background:rgba(20,20,20,.82);display:flex;align-items:center;justify-content:center;padding:16px;";
-        var card = document.createElement("div");
-        card.style.cssText =
-          "max-width:420px;width:100%;background:#181818;color:#eee;padding:22px;border-radius:10px;font-family:inherit;";
-        card.innerHTML =
-          "<p style=\"margin:0 0 10px;font-weight:700;\">メディアオブジェクトの削除確認</p>" +
-          "<p style=\"margin:0 0 14px;font-size:13px;line-height:1.65;opacity:.9;\">チャンネルに紐づく限定公開エントリを削除キューに載せますか？</p>";
-        var row = document.createElement("div");
-        row.style.cssText = "display:flex;gap:10px;justify-content:flex-end;";
-        function reply(c) {
-          try {
-            if (window.opener && !window.opener.closed) {
-              window.opener.postMessage({ type: "KN_PURGE_SITE_RESPONSE", step: step, choice: c }, "*");
-            }
-          } catch (e) {}
-          knPurgeAdvance(step);
-        }
-        var n = document.createElement("button");
-        n.textContent = "いいえ";
-        n.type = "button";
-        var y = document.createElement("button");
-        y.textContent = "はい";
-        y.type = "button";
-        n.onclick = function () {
-          reply(false);
-        };
-        y.onclick = function () {
-          reply(true);
-        };
-        row.appendChild(n);
-        row.appendChild(y);
-        card.appendChild(row);
-        ov.appendChild(card);
-        document.body.appendChild(ov);
-      }
       knApplyFootprint();
-      knPurgeModal();
     })();
   </script>
 </body>
