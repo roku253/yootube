@@ -871,3 +871,52 @@ html.token-gate-ok #site-root {
   color: var(--text);
   font-weight: 600;
 }
+
+/* 簡易視聴シェル（2016報道など単体ページ） */
+.watch-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+.watch-shell .watch-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.watch-shell .watch-player-label {
+  color: #aaa;
+  font-size: 14px;
+}
+.watch-shell .watch-meta {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+.watch-shell .watch-desc {
+  line-height: 1.7;
+  font-size: 14px;
+  margin: 12px 0;
+}
+.watch-shell .watch-caption {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+}
+.watch-chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.watch-chapters button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  background: var(--engage-bg);
+  color: var(--text-secondary);
+}
+.watch-chapters button.is-active {
+  background: var(--chip-sidebar-on-bg);
+  color: var(--chip-sidebar-on-text);
+}
