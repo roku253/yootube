@@ -9,11 +9,19 @@
  *
  * 設定：
  *  - TOKEN_GATE_ORIGIN: 任務ポータルのオリジン
- *  - <head> で window.__TOKEN_RESOURCE_KEY__ を設定（例: "ext:urban-legend-board"）
+ *  - <head> で window.__TOKEN_RESOURCE_KEY__ を設定（例: "ext:<site-id>"）
  *
  * 任意フック：
  *  - window.__TOKEN_DENIED__(message) でサイトの雰囲気に合った全面エラーを表示
  *    （未定義時はデフォルトの黒画面オーバーレイ）
+ *  - window.__TOKEN_ALLOW_EMBED_BYPASS__ = true のサイトのみ ?embed=kasumi でゲートをスキップ
+ *    （観光サイト等から iframe 埋め込みされる地図サイト用）
+ *
+ * ローカル開発:
+ *  - hostname が localhost / 127.0.0.1 / [::1] のとき token-gate をスキップ（Live Server 等）
+ *
+ * ※このファイルの正本は 謎解き/_shared/token-gate.js。各サイトのコピーは
+ *   main-portal-next/scripts/check-token-gate-sync.mjs で同期チェックできる。直接編集しないこと。
  */
 ;(function () {
   var TOKEN_GATE_ORIGIN = "https://nazo-portal.vercel.app"
@@ -224,8 +232,34 @@
       })
   }
 
+  function isEmbedKasumiBypass() {
+    if (window.__TOKEN_ALLOW_EMBED_BYPASS__ !== true) return false
+    try {
+      return new URLSearchParams(window.location.search).get("embed") === "kasumi"
+    } catch (e) {
+      return false
+    }
+  }
+
+  function isLocalDevHost() {
+    try {
+      var h = window.location.hostname
+      return h === "localhost" || h === "127.0.0.1" || h === "[::1]"
+    } catch (e) {
+      return false
+    }
+  }
+
   function start() {
     cleanUrlToken()
+    if (isEmbedKasumiBypass()) {
+      unlock()
+      return
+    }
+    if (isLocalDevHost()) {
+      unlock()
+      return
+    }
     var resourceKey = window.__TOKEN_RESOURCE_KEY__ || ""
     var c = readCreds()
 
